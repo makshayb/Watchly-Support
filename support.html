@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchly Support - Your Personal Media Hub</title>
+    <meta name="description" content="Get help with Watchly - Your personal media streaming app. Find answers, report issues, and contact our support team.">
+    
+    <!-- Apple-specific meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📺</text></svg>">
+    
+    <style>
+        :root {
+            /* Watchly Brand Colors */
+            --primary-color: #9C4FFF;
+            --secondary-color: #00FFFA;
+            --accent-color: #FF6B6B;
+            --background-primary: #0A0A0A;
+            --background-secondary: #1A1A1A;
+            --background-tertiary: #2A2A2A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --text-tertiary: #808080;
+            --border-color: #333333;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --error-color: #F44336;
+            
+            /* Spacing */
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+            --spacing-xxl: 64px;
+            
+            /* Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--background-primary), var(--background-secondary));
+        }
+        
+        .animated-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(156, 79, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 250, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+        
+        /* Header */
+        .header {
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--spacing-md);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            box-shadow: var(--shadow-lg);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .app-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .app-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .app-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Section */
+        .section {
+            margin-bottom: var(--spacing-xxl);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--background-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* Contact Options */
+        .contact-option {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md);
+            background: var(--background-tertiary);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .contact-option:hover {
+            background: var(--background-secondary);
+            border-color: var(--primary-color);
+            transform: translateX(8px);
+        }
+        
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+            font-size: 24px;
+        }
+        
+        .contact-icon.support { background: linear-gradient(135deg, var(--primary-color), #7B3FE0); }
+        .contact-icon.bug { background: linear-gradient(135deg, var(--error-color), #D32F2F); }
+        .contact-icon.feature { background: linear-gradient(135deg, var(--warning-color), #F57C00); }
+        
+        .contact-content h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .contact-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* FAQ */
+        .faq-item {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .faq-question {
+            background: var(--background-tertiary);
+            border: none;
+            width: 100%;
+            padding: var(--spacing-md);
+            text-align: left;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question:hover {
+            background: var(--background-secondary);
+        }
+        
+        .faq-question.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: var(--background-secondary);
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+        }
+        
+        .faq-answer.active {
+            max-height: 200px;
+            padding: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .faq-answer p {
+            color: var(--text-secondary);
+        }
+        
+        /* App Info */
+        .app-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+        }
+        
+        .info-item {
+            text-align: center;
+            padding: var(--spacing-md);
+        }
+        
+        .info-item h4 {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .info-item p {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: var(--spacing-xxl);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-text {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .app-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-option {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-icon {
+                margin-right: 0;
+                margin-bottom: var(--spacing-sm);
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Focus styles */
+        button:focus, a:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="app-icon">📺</div>
+            <h1 class="app-title">Watchly</h1>
+            <p class="app-subtitle">Your Personal Media Hub</p>
+            <p class="app-description">
+                Stream, organize, and enjoy your favorite movies and TV shows from anywhere. 
+                Watchly brings all your media together in one beautiful, intuitive app.
+            </p>
+        </header>
+
+        <!-- Quick Help Section -->
+        <section class="section">
+            <h2 class="section-title">Get Help</h2>
+            <div class="card-grid">
+                <a href="mailto:support.watchly@orbitx.studio?subject=Watchly%20Support%20Request" class="contact-option">
+                    <div class="contact-icon support">📧</div>
+                    <div class="contact-content">
+                        <h3>Contact Support</h3>
+                        <p>Get help with any issues or questions</p>
+                    </div>
+                </a>
+                
+                <a href="mailto:bugs.watchly@orbitx.studio?subject=Bug%20Report%20-%20Watchly%20iOS" class="contact-option">
+                    <div class="contact-icon bug">🐛</div>
+                    <div class="contact-content">
+                        <h3>Report a Bug</h3>
+                        <p>Help us fix issues and improve the app</p>
+                    </div>
+                </a>
+                
+                <a href="mailto:features.watchly@orbitx.studio?subject=Feature%20Request%20-%20Watchly%20iOS" class="contact-option">
+                    <div class="contact-icon feature">💡</div>
+                    <div class="contact-content">
+                        <h3>Request a Feature</h3>
+                        <p>Suggest new features and improvements</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="card">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        How do I add media to my library?
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You can add media to your library by connecting local files, cloud storage services, or media servers through the Locations section in Settings. Watchly supports various formats and automatically organizes your content.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        Why isn't my media playing?
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Make sure your media files are in supported formats and that your device has permission to access the storage location. Check your network connection if using cloud or remote media sources.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        How do I sync my data across devices?
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sign in to your Watchly account in the app settings. Your watchlist, viewing progress, and preferences will automatically sync across all your devices.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        Is my data private and secure?
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, we take privacy seriously. Your media stays on your devices or chosen storage locations. We only sync metadata and preferences. Read our Privacy Policy for full details.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        What devices are supported?
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Watchly is available for iPhone and iPad running iOS 16.0 or later. We're working on additional platform support for the future.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Information -->
+        <section class="section">
+            <h2 class="section-title">App Information</h2>
+            <div class="card">
+                <div class="app-info">
+                    <div class="info-item">
+                        <h4>Developer</h4>
+                        <p>OrbitX Studio</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Platform</h4>
+                        <p>iOS 16.0+</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Category</h4>
+                        <p>Entertainment</p>
+                    </div>
+                    <div class="info-item">
+                        <h4>Support Email</h4>
+                        <p>support.watchly@orbitx.studio</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Information -->
+        <section class="section">
+            <h2 class="section-title">Contact Information</h2>
+            <div class="card">
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+                    Need help or have questions? We're here to assist you.
+                </p>
+                <div style="text-align: center;">
+                    <p><strong>Support Email:</strong> <a href="mailto:support.watchly@orbitx.studio" style="color: var(--primary-color);">support.watchly@orbitx.studio</a></p>
+                    <p style="margin-top: var(--spacing-sm); color: var(--text-secondary);">
+                        We typically respond within 24-48 hours
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" class="footer-link" onclick="showTerms()">Terms of Service</a>
+                <a href="#" class="footer-link" onclick="showPrivacy()">Privacy Policy</a>
+                <a href="mailto:support.watchly@orbitx.studio" class="footer-link">Contact Support</a>
+            </div>
+            <p class="footer-text">
+                © 2024 OrbitX Studio. All rights reserved. Made with ❤️ for media enthusiasts.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle Function
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const isActive = button.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.classList.remove('active');
+                q.querySelector('span').textContent = '▼';
+            });
+            document.querySelectorAll('.faq-answer').forEach(a => {
+                a.classList.remove('active');
+            });
+            
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                button.classList.add('active');
+                button.querySelector('span').textContent = '▲';
+                answer.classList.add('active');
+            }
+        }
+        
+        // Placeholder functions for Terms and Privacy
+        function showTerms() {
+            alert('Terms of Service will be loaded here. For now, please contact support.watchly@orbitx.studio for any legal questions.');
+        }
+        
+        function showPrivacy() {
+            alert('Privacy Policy will be loaded here. For now, please contact support.watchly@orbitx.studio for privacy-related questions.');
+        }
+        
+        // Smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
